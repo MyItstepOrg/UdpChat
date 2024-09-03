@@ -65,6 +65,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\UdpChat.Core\UdpChat.Core.csproj" />
+	  <ProjectReference Include="..\UdpChat.Services\UdpChat.Services.csproj" />
 	</ItemGroup>
 
 </Project>
