@@ -9,13 +9,13 @@ public partial class MainViewModel : ObservableObject
     private UserInfo userInfo = new();
 
     [RelayCommand]
-    private void Connect()
+    private async Task Connect()
     {
         UserInfo.IsConnected = true;
         UserInfo.IsNotConnected = false;
     }
     [RelayCommand]
-    private void Disconnect()
+    private async Task Disconnect()
     {
         UserInfo.IsConnected = false;
         UserInfo.IsNotConnected = true;
