@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:UdpChat.View.ViewModel"
+             x:Class="UdpChat.View.View.MainPage"
+             x:DataType="viewModel:MainViewModel">
+
+    <Grid
+        ColumnDefinitions="*"
+        RowDefinitions="55, *, 60"
+        RowSpacing="2">
+        <Border
+            Padding="2"
+            StrokeThickness="2"
+            StrokeShape="RoundRectangle 3"
+            Stroke="Gray">
+            <HorizontalStackLayout Spacing="4">
+                <Entry MinimumWidthRequest="350" Placeholder="IP" Text="{Binding UserInfo.Ip}" IsEnabled="{Binding UserInfo.IsNotConnected}"/>
+                <Entry MinimumWidthRequest="150" Placeholder="Port" Text="{Binding UserInfo.Port}" IsEnabled="{Binding UserInfo.IsNotConnected}"/>
+                <Button Text="Connect" Command="{Binding ConnectCommand}" IsEnabled="{Binding UserInfo.IsNotConnected}" CornerRadius="3"/>
+                <Button Text="Disconnect" Command="{Binding DisconnectCommand}" IsEnabled="{Binding UserInfo.IsConnected}" CornerRadius="3"/>
+            </HorizontalStackLayout>
+        </Border>
+
+        <Border
+            Grid.Row="1"
+            Padding="2"
+            StrokeThickness="2"
+            StrokeShape="RoundRectangle 3"
+            Stroke="Gray">
+            <CollectionView ItemsSource="{Binding UserInfo.MessageHistory}">
+                <CollectionView.ItemTemplate>
+                    <!--TODO: Add x:DataType to collection view-->
+                    <DataTemplate>
+                        <Border
+                            StrokeShape="RoundRectangle 5"
+                            BackgroundColor="Gray">
+                            <Grid
+                                RowDefinitions="*, *"
+                                ColumnDefinitions="115, 40,*">
+                                <Label Text=""/>
+                                <Label Grid.Column="1" Text="|"/>
+                                <Label Grid.Column="2" Grid.RowSpan="2" Text=""/>
+                                <Label Grid.Row="1" Text=""/>
+                                <Label Grid.Column="1" Grid.Row="1" Text="|"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Border>
+
+        <Border
+            Grid.Row="2"
+            Padding="2"
+            StrokeThickness="2"
+            StrokeShape="RoundRectangle 3"
+            Stroke="Gray">
+            <FlexLayout>
+                <Entry FlexLayout.Grow="1" Text="{Binding UserInfo.Message}" IsEnabled="{Binding UserInfo.IsConnected}"/>
+                <Button WidthRequest="100" Text="Send" Command="{Binding SendCommand}" IsEnabled="{Binding UserInfo.IsConnected}" CornerRadius="3"/>
+            </FlexLayout>
+        </Border>
+    </Grid>
+
+</ContentPage>
