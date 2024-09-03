@@ -1,4 +1,4 @@
-﻿namespace UdpChat
+﻿namespace UdpChat.View
 {
     public partial class App : Application
     {

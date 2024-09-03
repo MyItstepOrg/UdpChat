@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using UdpChat.View;
-using UdpChat.ViewModel;
 
-namespace UdpChat
+namespace UdpChat.View
 {
     public static class MauiProgram
     {
@@ -16,10 +14,6 @@ namespace UdpChat
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-
-            builder.Services
-                .AddTransient<MainPage>()
-                .AddTransient<MainViewModel>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

@@ -14,17 +14,17 @@
 		<!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
 
 		<OutputType>Exe</OutputType>
-		<RootNamespace>UdpChat</RootNamespace>
+		<RootNamespace>UdpChat.View</RootNamespace>
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>UdpChat</ApplicationTitle>
+		<ApplicationTitle>UdpChat.View</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.udpchat</ApplicationId>
+		<ApplicationId>com.companyname.udpchat.view</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -57,19 +57,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.82" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-		<PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.1.1" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\UdpChat.Core\UdpChat.Core.csproj" />
-	  <ProjectReference Include="..\UdpChat.Service\UdpChat.Service.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Update="Microsoft.Maui.Controls" Version="8.0.82" />
 	</ItemGroup>
 
 </Project>

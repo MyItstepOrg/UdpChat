@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace UdpChat
+namespace UdpChat.View
 {
     [Application]
     public class MainApplication : MauiApplication

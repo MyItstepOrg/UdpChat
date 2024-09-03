@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace UdpChat
+namespace UdpChat.View
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

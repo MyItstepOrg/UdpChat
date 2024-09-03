@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Shell
-    x:Class="UdpChat.AppShell"
+    x:Class="UdpChat.View.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:page="clr-namespace:UdpChat.View"
+    xmlns:local="clr-namespace:UdpChat.View"
     Shell.FlyoutBehavior="Disabled"
-    Title="UdpChat">
+    Title="UdpChat.View">
 
     <ShellContent
-        Title="Chat"
-        ContentTemplate="{DataTemplate page:MainPage}"
+        Title="Home"
+        ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
 </Shell>
