@@ -5,9 +5,9 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UdpChat.Presentation", "UdpChat.Presentation.csproj", "{DFF8F6B2-C9BB-41AD-B6F9-AD4F3146F06A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UdpChat.Core", "..\UdpChat.Core\UdpChat.Core.csproj", "{7AD7406F-5EE2-48A9-9DF0-8A06901B0D4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UdpChat.Core", "..\UdpChat.Core\UdpChat.Core.csproj", "{7AD7406F-5EE2-48A9-9DF0-8A06901B0D4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UdpChat.Service", "..\UdpChat.Service\UdpChat.Service.csproj", "{ABE73973-190B-4B6E-A2F6-B71FB329EA21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UdpChat.Service", "..\UdpChat.Service\UdpChat.Service.csproj", "{ABE73973-190B-4B6E-A2F6-B71FB329EA21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

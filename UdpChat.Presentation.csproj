@@ -64,6 +64,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\UdpChat.Core\UdpChat.Core.csproj" />
+	  <ProjectReference Include="..\UdpChat.Service\UdpChat.Service.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <PackageReference Update="Microsoft.Maui.Controls" Version="8.0.82" />
 	</ItemGroup>
 
