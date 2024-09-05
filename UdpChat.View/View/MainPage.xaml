@@ -2,24 +2,31 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModel="clr-namespace:UdpChat.View.ViewModel"
+             xmlns:model="clr-namespace:UdpChat.Core.Data.DTO;assembly=UdpChat.Core"
              x:Class="UdpChat.View.View.MainPage"
              x:DataType="viewModel:MainViewModel">
 
     <Grid
         ColumnDefinitions="*"
-        RowDefinitions="55, *, 60"
+        RowDefinitions="100, *, 60"
         RowSpacing="2">
         <Border
             Padding="2"
             StrokeThickness="2"
             StrokeShape="RoundRectangle 3"
             Stroke="Gray">
-            <HorizontalStackLayout Spacing="4">
-                <Entry MinimumWidthRequest="350" Placeholder="IP" Text="{Binding UserInfo.Ip}" IsEnabled="{Binding UserInfo.IsNotConnected}"/>
-                <Entry MinimumWidthRequest="150" Placeholder="Port" Text="{Binding UserInfo.Port}" IsEnabled="{Binding UserInfo.IsNotConnected}"/>
-                <Button Text="Connect" Command="{Binding ConnectCommand}" IsEnabled="{Binding UserInfo.IsNotConnected}" CornerRadius="3"/>
-                <Button Text="Disconnect" Command="{Binding DisconnectCommand}" IsEnabled="{Binding UserInfo.IsConnected}" CornerRadius="3"/>
-            </HorizontalStackLayout>
+            <VerticalStackLayout Spacing="3">
+                <HorizontalStackLayout Spacing="4">
+                    <Entry MinimumWidthRequest="350" Placeholder="IP" Text="{Binding UserInfo.Local.Address}" IsEnabled="{Binding UserInfo.IsNotConnected}"/>
+                    <Entry MinimumWidthRequest="150" Placeholder="Port" Text="{Binding UserInfo.Local.Port}" IsEnabled="{Binding UserInfo.IsNotConnected}"/>
+                    <Button Text="Start" Command="{Binding StartCommand}" IsEnabled="{Binding UserInfo.IsNotConnected}" CornerRadius="3"/>
+                    <Button Text="Close" Command="{Binding CloseCommand}" IsEnabled="{Binding UserInfo.IsConnected}" CornerRadius="3"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Spacing="4">
+                    <Entry MinimumWidthRequest="350" Placeholder="IP" Text="{Binding UserInfo.Remote.Address}" IsEnabled="{Binding UserInfo.IsNotConnected}"/>
+                    <Entry MinimumWidthRequest="150" Placeholder="Port" Text="{Binding UserInfo.Remote.Port}" IsEnabled="{Binding UserInfo.IsNotConnected}"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
         </Border>
 
         <Border
@@ -30,18 +37,17 @@
             Stroke="Gray">
             <CollectionView ItemsSource="{Binding UserInfo.MessageHistory}">
                 <CollectionView.ItemTemplate>
-                    <!--TODO: Add x:DataType to collection view-->
-                    <DataTemplate>
+                    <DataTemplate x:DataType="model:MessageDto">
                         <Border
-                            StrokeShape="RoundRectangle 5"
+                            StrokeShape="RoundRectangle 3"
                             BackgroundColor="Gray">
                             <Grid
                                 RowDefinitions="*, *"
                                 ColumnDefinitions="115, 40,*">
-                                <Label Text=""/>
+                                <Label Text="{Binding Sender}"/>
                                 <Label Grid.Column="1" Text="|"/>
-                                <Label Grid.Column="2" Grid.RowSpan="2" Text=""/>
-                                <Label Grid.Row="1" Text=""/>
+                                <Label Grid.Column="2" Grid.RowSpan="2" Text="{Binding Content}"/>
+                                <Label Grid.Row="1" Text="{Binding Time}"/>
                                 <Label Grid.Column="1" Grid.Row="1" Text="|"/>
                             </Grid>
                         </Border>
