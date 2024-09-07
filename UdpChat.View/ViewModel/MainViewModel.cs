@@ -9,14 +9,15 @@ using UdpChat.Services;
 namespace UdpChat.View.ViewModel;
 public partial class MainViewModel : ObservableObject
 {
-    public required UdpService udp;
+    public required UdpClientService udp;
     [ObservableProperty]
     private UserInfo userInfo = new();
 
     [RelayCommand]
     private async Task Start()
     {
-        this.udp = new UdpService(UserInfo.Local);
+        this.udp = new UdpClientService(UserInfo);
+        this.udp.Connect();
         try
         {
             UserInfo.MessageHistory.Clear();
@@ -72,7 +73,7 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private void Send()
     {
-        if(this.udp.Send(UserInfo.Message, UserInfo.Remote))
+        if(this.udp.Send(UserInfo.Message))
             UserInfo.MessageHistory.Add(new MessageDto()
             {
                 Time = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
