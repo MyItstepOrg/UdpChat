@@ -5,7 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:page="clr-namespace:UdpChat.View.View"
     Shell.FlyoutBehavior="Disabled"
-    Title="UdpChat.View">
+    Title="UdpChat.View"
+    Shell.NavBarIsVisible="False">
 
     <ShellContent
         Title="Home"

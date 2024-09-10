@@ -9,6 +9,34 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
+            <Color x:Key="BackgroundColor">#323338</Color>
+            
+            <Color x:Key="PanelColor">#2C2D31</Color>
+            
+            <Color x:Key="TextColor">#FFFFFF</Color>
+           
+            <Color x:Key="SecondaryTextColor">#99AAB5</Color>
+           
+
+            <Style TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="{StaticResource BackgroundColor}" />
+            </Style>
+
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource TextColor}" />
+            </Style>
+
+            <Style TargetType="Entry">
+                <Setter Property="TextColor" Value="{StaticResource TextColor}" />
+                <Setter Property="BackgroundColor" Value="{StaticResource PanelColor}" />
+            </Style>
+
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource SecondaryTextColor}" />
+                <Setter Property="TextColor" Value="{StaticResource TextColor}" />
+                <Setter Property="CornerRadius" Value="5" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
