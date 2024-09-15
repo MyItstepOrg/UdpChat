@@ -4,93 +4,96 @@
              xmlns:viewModel="clr-namespace:UdpChat.View.ViewModel"
              xmlns:model="clr-namespace:UdpChat.Core.Data.DTO;assembly=UdpChat.Core"
              x:Class="UdpChat.View.View.MainPage"
-             x:DataType="viewModel:MainViewModel">
+             x:DataType="viewModel:MainViewModel"
+             Background="{StaticResource BackgroundColor}">
 
-    <!--<Grid
-        ColumnDefinitions="*"
-        RowDefinitions="100, *, 60"
-        RowSpacing="2">
-        <Border
-            Padding="2"
-            StrokeThickness="2"
-            StrokeShape="RoundRectangle 3"
-            Stroke="Gray">
-            <VerticalStackLayout Spacing="3">
-                <HorizontalStackLayout Spacing="4">
-                    <Entry MinimumWidthRequest="350" Placeholder="IP" Text="{Binding UserInfo.Local.Address}" IsEnabled="{Binding UserInfo.IsNotConnected}"/>
-                    <Entry MinimumWidthRequest="150" Placeholder="Port" Text="{Binding UserInfo.Local.Port}" IsEnabled="{Binding UserInfo.IsNotConnected}"/>
-                    <Button Text="Start" Command="{Binding StartCommand}" IsEnabled="{Binding UserInfo.IsNotConnected}" CornerRadius="3"/>
-                    <Button Text="Close" Command="{Binding CloseCommand}" IsEnabled="{Binding UserInfo.IsConnected}" CornerRadius="3"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout Spacing="4">
-                    <Entry MinimumWidthRequest="350" Placeholder="IP" Text="{Binding UserInfo.Remote.Address}" IsEnabled="{Binding UserInfo.IsNotConnected}"/>
-                    <Entry MinimumWidthRequest="150" Placeholder="Port" Text="{Binding UserInfo.Remote.Port}" IsEnabled="{Binding UserInfo.IsNotConnected}"/>
-                </HorizontalStackLayout>
-            </VerticalStackLayout>
-        </Border>
+    <!--Wrapper-->
+    <Grid>
 
-        <Border
-            Grid.Row="1"
-            Padding="2"
-            StrokeThickness="2"
-            StrokeShape="RoundRectangle 3"
-            Stroke="Gray">
-            <CollectionView ItemsSource="{Binding UserInfo.MessageHistory}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:MessageDto">
-                        <Border
-                            StrokeShape="RoundRectangle 3"
-                            BackgroundColor="Gray">
-                            <Grid
-                                RowDefinitions="*, *"
-                                ColumnDefinitions="115, 40,*">
-                                <Label Text="{Binding Sender}"/>
-                                <Label Grid.Column="1" Text="|"/>
-                                <Label Grid.Column="2" Grid.RowSpan="2" Text="{Binding Content}"/>
-                                <Label Grid.Row="1" Text="{Binding Time}"/>
-                                <Label Grid.Column="1" Grid.Row="1" Text="|"/>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </Border>
+        <!--Wrapper cfg-->
 
-        <Border
-            Grid.Row="2"
-            Padding="2"
-            StrokeThickness="2"
-            StrokeShape="RoundRectangle 3"
-            Stroke="Gray">
-            <FlexLayout>
-                <Entry FlexLayout.Grow="1" Text="{Binding UserInfo.Message}" IsEnabled="{Binding UserInfo.IsConnected}"/>
-                <Button WidthRequest="100" Text="Send" Command="{Binding SendCommand}" IsEnabled="{Binding UserInfo.IsConnected}" CornerRadius="3"/>
-            </FlexLayout>
-        </Border>
-    </Grid>-->
-    <Grid>       
+        <!--Column definition-->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" />            
-            <ColumnDefinition Width="5*" />           
             <ColumnDefinition Width="2*" />
-           
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
+        <!--Row definition-->
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />           
-            <RowDefinition Height="Auto" />            
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        
-        <StackLayout Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" BackgroundColor="{StaticResource PanelColor}" Padding="10">
-            <Label Text="Chats" FontAttributes="Bold" TextColor="{StaticResource TextColor}" />           
-        </StackLayout>
+        <!--First block-->
+        <Grid
+            Grid.Column="0"
+            Grid.RowSpan="2"
+            BackgroundColor="{StaticResource PanelColor}"
+            Padding="5">
 
-       
-        <StackLayout Grid.Column="1" Grid.Row="0" BackgroundColor="{StaticResource BackgroundColor}" Padding="10">
+            <!--First block cfg-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="40" />
+            </Grid.RowDefinitions>
+
+            <!--Chats block-->
+            <StackLayout>
+                <!--Chats title-->
+                <Label Text="Chats" FontAttributes="Bold" TextColor="{StaticResource TextColor}" />
+                <Button Margin="0, 10" Text="Add"></Button>
+                <!--Chats list-->
+                <CollectionView ItemsSource="{Binding UserInfo.Chats}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:ChatDto">
+                            <Label Text="{Binding Name}" Background="{StaticResource BackgroundColor}">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        NumberOfTapsRequired="1"
+                                        Command="{Binding Source={RelativeSource 
+                                        AncestorType={x:Type ContentPage}}, 
+                                        Path=BindingContext.LoadChatCommand}"
+                                        CommandParameter="{Binding Name}"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+
+            <!--Profile block-->
+            <StackLayout
+                Grid.Row="1"
+                Background="{StaticResource BackgroundColor}">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer
+                        NumberOfTapsRequired="1"
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}},
+                        Path=BindingContext.LoadProfileCommand}"/>
+                </StackLayout.GestureRecognizers>
+                <Label Text="{Binding UserInfo.Username}" />
+                <Label Text="Online" />
+            </StackLayout>
+        </Grid>
+
+        <!--Second block-->
+        <Grid
+            Grid.Column="1"
+            BackgroundColor="{StaticResource BackgroundColor}"
+            Padding="5"
+            IsVisible="{Binding UserInfo.ChatLoaded}">
+
+            <!--Second block cfg-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="45"/>
+            </Grid.RowDefinitions>
+
+            <!--Message history-->
             <CollectionView ItemsSource="{Binding UserInfo.MessageHistory}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:MessageDto">
+                        <!--Message-->
                         <Border
                              StrokeShape="RoundRectangle 3"
                              BackgroundColor="Gray">
@@ -106,22 +109,45 @@
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-            </CollectionView>           
-        </StackLayout>
-       
-        <StackLayout Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" BackgroundColor="{StaticResource PanelColor}" Padding="10">
-            <Label Text="Members" FontAttributes="Bold" TextColor="{StaticResource TextColor}" />            
-        </StackLayout>
-      
-        <Grid Grid.Column="1" Grid.Row="1" ColumnSpacing="5" Padding="10" BackgroundColor="{StaticResource PanelColor}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+            </CollectionView>
 
-            <Entry Grid.Column="0" Placeholder="Message:" TextColor="{StaticResource TextColor}" BackgroundColor="{StaticResource PanelColor}" PlaceholderColor="{StaticResource SecondaryDarkText}" />
-            <Button Grid.Column="1" Text="Send" BackgroundColor="{StaticResource SecondaryTextColor}" TextColor="{StaticResource TextColor}" Command="{Binding SendCommand}" IsEnabled="{Binding UserInfo.IsConnected}" />
+            <!--Send message block-->
+            <Grid
+                ColumnSpacing="5"
+                Padding="5"
+                BackgroundColor="{StaticResource PanelColor}"
+                Grid.Row="1">
+
+                <!--Send message block cfg-->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!--Entry message-->
+                <Entry Grid.Column="0" Placeholder="Message:" Text="{Binding UserInfo.Message}" TextColor="{StaticResource TextColor}" BackgroundColor="{StaticResource PanelColor}" PlaceholderColor="{StaticResource SecondaryDarkText}" />
+                <!--Button send-->
+                <Button Grid.Column="1" Text="Send" BackgroundColor="{StaticResource SecondaryTextColor}" TextColor="{StaticResource TextColor}" Command="{Binding SendCommand}" />
+            </Grid>
         </Grid>
-    </Grid>
 
+        <!--Members block-->
+        <StackLayout
+            Grid.Column="2"
+            Grid.RowSpan="2"
+            BackgroundColor="{StaticResource PanelColor}"
+            Padding="5"
+            IsVisible="{Binding UserInfo.ChatLoaded}">
+            <!--Members title-->
+            <Label Text="Members" FontAttributes="Bold" TextColor="{StaticResource TextColor}" Margin="0, 0, 0, 10" />
+            <!--Members list-->
+            <CollectionView ItemsSource="{Binding UserInfo.Users}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:UserDto">
+                        <Label Text="{Binding Username}" BackgroundColor="{StaticResource BackgroundColor}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </Grid>
 </ContentPage>

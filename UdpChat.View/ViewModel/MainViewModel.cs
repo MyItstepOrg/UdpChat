@@ -1,85 +1,90 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
-using System.Net.Sockets;
+using System.Net;
+using System.Text.Json;
+using UdpChat.Core.Data.Dto;
 using UdpChat.Core.Data.DTO;
 using UdpChat.Core.Data.Source.Local;
-using UdpChat.Services;
+using UdpChat.Core.Data.Source.Remote;
+using UdpChat.View.View;
 
 namespace UdpChat.View.ViewModel;
 public partial class MainViewModel : ObservableObject
 {
-    public required UdpClientService udp;
+    public required Udp udp;
     [ObservableProperty]
     private UserInfo userInfo = new();
 
-    [RelayCommand]
-    private async Task Start()
+    public MainViewModel() => this.Start();
+
+    private async void Start()
     {
-        this.udp = new UdpClientService(UserInfo);
-        this.udp.Connect();
-        try
+        this.udp = new Udp(UserInfo.Local);
+        while (true)
         {
-            UserInfo.MessageHistory.Clear();
-            UserInfo.IsConnected = true;
-            UserInfo.IsNotConnected = !UserInfo.IsConnected;
-            while (true)
+            try
             {
-                var result = await this.udp.Receive();
-                UserInfo.MessageHistory.Add(new MessageDto()
+                if (this.udp.Send($"#connect", UserInfo.Remote))
                 {
-                    Time = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
-                    Content = System.Text.Encoding.UTF8.GetString(result.Buffer),
-                    Sender = result.RemoteEndPoint.ToString()
-                });
+                    UserInfo.Status = true;
+                    UserInfo.MessageHistory.Clear();
+                    while (true)
+                    {
+                        var result = await this.udp.Receive();
+                        string message = System.Text.Encoding.UTF8.GetString(result.Buffer);
+                        if (message.StartsWith("#info")
+                            && result.RemoteEndPoint == this.UserInfo.Remote)
+                        {
+                            List<ChatDto> chats = JsonSerializer.Deserialize<List<ChatDto>>(result.Buffer);
+                            this.UserInfo.Chats.Clear();
+                            foreach (var c in chats)
+                                this.UserInfo.Chats.Add(c);
+                        }
+                        else
+                            UserInfo.MessageHistory.Add(new MessageDto()
+                            {
+                                Time = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
+                                Content = message,
+                                Sender = result.RemoteEndPoint.ToString()
+                            });
+                    }
+                }
             }
-        }
-        catch (SocketException ex)
-        {
-            Debug.WriteLine($"Socket exception: + {ex.Message}");
-        }
-        finally
-        {
-            if (UserInfo.IsConnected)
+            catch (Exception ex)
             {
-                UserInfo.MessageHistory.Add(new MessageDto()
-                {
-                    Time = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
-                    Content = "Unreachable!",
-                    Sender = "SYSTEM:"
-                });
-                this.Close();
+                Debug.WriteLine($"Exception: + {ex.Message}");
             }
         }
     }
+    private void Close() => this.udp.Close();
     [RelayCommand]
-    private void Close()
+    private void Send(IPEndPoint remote)
     {
-        if (UserInfo.IsConnected)
+        //TODO: properly send data
+        if (this.udp.Send(UserInfo.Message, remote) && this.udp.IsConnected())
         {
-            this.udp.Close();
-            UserInfo.IsConnected = false;
-            UserInfo.IsNotConnected = !UserInfo.IsConnected;
-            UserInfo.MessageHistory.Add(new MessageDto()
-            {
-                Time = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
-                Content = "Closing...",
-                Sender = "SYSTEM:"
-            });
-            UserInfo.IsConnected = false;
-            UserInfo.IsNotConnected = true;
-        }
-    }
-    [RelayCommand]
-    private void Send()
-    {
-        if(this.udp.Send(UserInfo.Message))
             UserInfo.MessageHistory.Add(new MessageDto()
             {
                 Time = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
                 Sender = "me:",
                 Content = UserInfo.Message
             });
-        UserInfo.Message = string.Empty;
+            UserInfo.Message = string.Empty;
+        }
     }
+    [RelayCommand]
+    private void LoadChat(string chatName)
+    {
+        UserInfo.ChatLoaded = true;
+        UserInfo.MessageHistory.Clear();
+        UserInfo.Users.Clear();
+        foreach (var m in UserInfo.Chats.First(c => c.Name == chatName).MessageHistory)
+            UserInfo.MessageHistory.Add(m);
+        foreach (var u in UserInfo.Chats.First(c => c.Name == chatName).UsersList)
+            UserInfo.Users.Add(u);
+    }
+    [RelayCommand]
+    private void LoadProfile() => Shell.Current.GoToAsync(nameof(ProfilePage));
+    public ReceiveDataDto? UnpackReceiveData(string json) => JsonSerializer.Deserialize<ReceiveDataDto>(json);
 }

@@ -9,8 +9,10 @@
     Shell.NavBarIsVisible="False">
 
     <ShellContent
-        Title="Home"
         ContentTemplate="{DataTemplate page:MainPage}"
         Route="MainPage" />
-
+    <ShellContent
+        Title="Profile"
+        ContentTemplate="{DataTemplate page:ProfilePage}"
+        Route="ProfilePage" />
 </Shell>

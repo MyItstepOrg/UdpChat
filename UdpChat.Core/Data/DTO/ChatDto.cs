@@ -1,11 +1,8 @@
-﻿using System.Collections.ObjectModel;
-
-namespace UdpChat.Core.Data.DTO
+﻿namespace UdpChat.Core.Data.DTO;
+public class ChatDto
 {
-    public class ChatDto
-    {
-        public uint Id { get; set; }
-        public UserDto Remote {  get; set; }
-        public ObservableCollection<MessageDto> MessageHistory { get; set; }
-    }
+    public uint Id { get; set; }
+    public string? Name { get; set; }
+    public List<MessageDto> MessageHistory { get; set; } = [];
+    public List<UserDto> UsersList { get; set; } = [];
 }

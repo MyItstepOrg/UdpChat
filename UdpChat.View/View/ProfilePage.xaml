@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:UdpChat.View.ViewModel"
+             xmlns:model="clr-namespace:UdpChat.Core.Data.DTO;assembly=UdpChat.Core"
+             x:DataType="viewModel:ProfileViewModel"
+             x:Class="UdpChat.View.View.ProfilePage"
+             Title="ProfilePage"
+             Background="{StaticResource BackgroundColor}">
+
+    <!--Wrapper-->
+    <StackLayout Padding="10" HorizontalOptions="Start">
+
+        <!--Profie-->
+        <Label Text="Profile" Margin="0, 0, 0, 10" FontSize="30" FontAttributes="Bold"/>
+        <Entry WidthRequest="400" Placeholder="Username" Margin="0, 0, 0, 10"/>
+        <Button Text="Save changes" WidthRequest="100" HorizontalOptions="Start" Margin="0, 0, 0, 50"/>
+
+        <!--Info-->
+        <Label Text="Info" Margin="0, 0, 0, 10" FontSize="30" FontAttributes="Bold" />
+        <Entry Text="" IsEnabled="False" Margin="0, 0, 0, 10" />
+        <Label Text="Status: Online" FontSize="17" />
+    </StackLayout>
+</ContentPage>

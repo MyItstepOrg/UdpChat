@@ -19,7 +19,9 @@ namespace UdpChat.View
 
             builder.Services
                 .AddTransient<MainPage>()
-                .AddTransient<MainViewModel>();
+                .AddTransient<MainViewModel>()
+                .AddTransient<ProfilePage>()
+                .AddTransient<ProfileViewModel>();
 
 #if DEBUG
     		builder.Logging.AddDebug();
