@@ -2,14 +2,13 @@
 using System.Net.Sockets;
 using System.Text;
 
-namespace UdpChat.Core.Data.Source.Remote;
+namespace UdpChat.Services;
 public class Udp
 {
     private readonly UdpClient socket;
 
     public Udp(IPEndPoint local) => socket = new UdpClient(local);
 
-    public bool IsConnected() => this.socket.Client.Connected;
     public bool Send(string datagram, IPEndPoint remote)
     {
         try
@@ -29,9 +28,6 @@ public class Udp
         }
         return true;
     }
-    public async Task<UdpReceiveResult> Receive()
-    {
-        return await this.socket.ReceiveAsync();
-    }
+    public async Task<UdpReceiveResult> Receive() => await this.socket.ReceiveAsync();
     public void Close() => this.socket.Close();
 }

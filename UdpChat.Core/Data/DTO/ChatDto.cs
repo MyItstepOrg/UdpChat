@@ -1,4 +1,4 @@
-﻿namespace UdpChat.Core.Data.DTO;
+﻿namespace UdpChat.Core.Data.Dto;
 public class ChatDto
 {
     public uint Id { get; set; }

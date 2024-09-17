@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModel="clr-namespace:UdpChat.View.ViewModel"
-             xmlns:model="clr-namespace:UdpChat.Core.Data.DTO;assembly=UdpChat.Core"
+             xmlns:model="clr-namespace:UdpChat.Core.Data.Dto;assembly=UdpChat.Core"
              x:DataType="viewModel:ProfileViewModel"
              x:Class="UdpChat.View.View.ProfilePage"
              Title="ProfilePage"
@@ -13,12 +13,18 @@
 
         <!--Profie-->
         <Label Text="Profile" Margin="0, 0, 0, 10" FontSize="30" FontAttributes="Bold"/>
-        <Entry WidthRequest="400" Placeholder="Username" Margin="0, 0, 0, 10"/>
+        <Label Text="Username" Margin="0, 0, 0, 5" />
+        <HorizontalStackLayout Margin="0, 0, 0, 10">
+            <Entry WidthRequest="300" Placeholder="Username" Margin="0, 0, 5, 0" />
+            <Entry Placeholder="ID" Text="" IsEnabled="False" />
+        </HorizontalStackLayout>
         <Button Text="Save changes" WidthRequest="100" HorizontalOptions="Start" Margin="0, 0, 0, 50"/>
 
         <!--Info-->
         <Label Text="Info" Margin="0, 0, 0, 10" FontSize="30" FontAttributes="Bold" />
-        <Entry Text="" IsEnabled="False" Margin="0, 0, 0, 10" />
-        <Label Text="Status: Online" FontSize="17" />
+        <HorizontalStackLayout>
+            <Label Text="Ip: " Margin="0, 0, 10, 0" FontSize="17" />
+            <Entry Text="" WidthRequest="200" IsEnabled="False" Margin="0, 0, 0, 10" />
+        </HorizontalStackLayout>
     </StackLayout>
 </ContentPage>

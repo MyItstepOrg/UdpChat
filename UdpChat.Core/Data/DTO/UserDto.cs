@@ -1,9 +1,8 @@
 ﻿using System.Net;
 
-namespace UdpChat.Core.Data.DTO;
+namespace UdpChat.Core.Data.Dto;
 public class UserDto
 {
-    public uint Id { get; set; }
-    public required IPEndPoint Address { get; set; }
+    public int Id { get; set; }
     public string? Username { get; set; }
 }
