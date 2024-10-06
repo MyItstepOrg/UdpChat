@@ -52,8 +52,8 @@
                                         NumberOfTapsRequired="1"
                                         Command="{Binding Source={RelativeSource 
                                         AncestorType={x:Type ContentPage}}, 
-                                        Path=BindingContext.LoadChatCommand}"
-                                        CommandParameter="{Binding Name}"/>
+                                        Path=BindingContext.LoadChatContentCommand}"
+                                        CommandParameter="{Binding Id}"/>
                                 </Label.GestureRecognizers>
                             </Label>
                         </DataTemplate>
@@ -73,7 +73,7 @@
                 </HorizontalStackLayout.GestureRecognizers>
                 <Label Text="{Binding UserInfo.Username}" />
                 <Label Text="#" />
-                <Label Text="{Binding UserInfo.Id}" />
+                <Label Text="{Binding UserInfo.UserId}" />
             </HorizontalStackLayout>
         </Grid>
 

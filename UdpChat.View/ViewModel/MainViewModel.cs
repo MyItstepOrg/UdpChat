@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
 using System.Text;
 using UdpChat.Core.Data.Dto;
-using UdpChat.Core.Data.Source;
 using UdpChat.Services;
 using UdpChat.View.View;
 
@@ -11,130 +10,64 @@ namespace UdpChat.View.ViewModel;
 public partial class MainViewModel : ObservableObject
 {
     public required Udp udp;
+    //TODO: properly read data from json pass data to controller
+    //Temporary plug
     [ObservableProperty]
-    UserInfo userInfo = new();
-    JsonConverter jsonConverter = new();
-
-    public MainViewModel() => this.Start();
+    private AppSettings.AppSettings appSettings = new();
+    public MainViewModel() => Start();
 
     private async void Start()
     {
-        udp = new Udp(UserInfo.Local);
+        udp = new Udp(AppSettings.Remote);
         try
         {
-            SendCommandToServer("#connect");
-            SendCommandToServer("#getchats");
+            //TODO: properly pass id to the command
+            udp.Connect(AppSettings.Remote, 51766);
             while (true)
             {
-                var result = await this.udp.Receive();
-                string message = Encoding.UTF8.GetString(result.Buffer);
-                DataPacket dataPacket = jsonConverter.Desirialize<DataPacket>(message);
-                switch (dataPacket.Command.ToLower())
-                {
-                    case "#connect":
-
-                        break;
-                    case "#getchats":
-
-                        break;
-                    case "#getchatcontent":
-
-                        break;
-                    case "#sendtochat":
-                        break;
-                    case "#updateuserinfo":
-                        break;
-                    case "#createnewchat":
-                        break;
-                    case "#adduserstochat":
-                        break;
-                    default:
-                        throw new Exception("Unknown command!");
-
-                }
+                var result = await udp.Receive();
+                string message = Encoding.Unicode.GetString(result.Buffer);
+                //TODO: handle received data packets
             }
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Exception: + {ex.Message}");
+            Debug.WriteLine($"Target site: {ex.TargetSite} Exception: {ex.Message}");
         }
     }
     private void Close() => udp.Close();
-    private async void SendCommandToServer(string command)
-    {
-        DataPacket packet = new()
-        {
-            UserId = UserInfo.Id,
-            Username = UserInfo.Username,
-            Command = command
-        };
-        string json = jsonConverter.Serialize(packet);
-        if (udp.Send(json, UserInfo.Remote))
-        {
-            try
-            {
-                var receive = await udp.Receive();
-                string message = Encoding.Unicode.GetString(receive.Buffer);
-                DataPacket dataPacket = jsonConverter.Desirialize<DataPacket>(message);
-                HandleDataPacket(dataPacket);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Exception: {ex.Message}");
-            }
-        }
-    }
-    private void GetChats()
-    {
-        DataPacket packet = new()
-        {
-            UserId = UserInfo.Id,
-            Username = UserInfo.Username,
-            Command = "#getchats"
-        };
-        string json = jsonConverter.Serialize(packet);
-        udp.Send(json, UserInfo.Remote);
-        while (true)
-        {
-            var receive = udp.Receive();
-
-        }
-    }
-    private void HandleDataPacket(DataPacket dataPacket)
-    {
-        switch (dataPacket.Command.ToLower())
-        {
-            case "#updateuserinfo":
-                UserDto userInfo = jsonConverter.Desirialize<UserDto>(dataPacket.Content);
-                UserInfo.
-                break;
-            case "#userchats":
-                break;
-            case "#chatcontent":
-                break;
-        }
-    }
     [RelayCommand]
     private void Send()
     {
-        //TODO: properly send data
-        if (udp.Send(UserInfo.Message, UserInfo.Remote))
+        DataPacket send = new()
         {
-            UserInfo.MessageHistory.Add(new MessageDto()
+            PacketType = "message",
+            SenderId = 51766,
+            TimeStamp = DateTime.Now,
+            Payload = new Dictionary<string, object>()
+            {
+                { "ChatId", AppSettings.CurrentOpenChatId },
+                { "Message", AppSettings.Message }
+            }
+        };
+        if (udp.Send(JsonProcessor.Serialize(send), AppSettings.Remote))
+        {
+            AppSettings.MessageHistory.Add(new MessageDto()
             {
                 Time = DateTime.Now,
                 Sender = "me:",
-                Content = UserInfo.Message
+                Content = AppSettings.Message
             });
-            UserInfo.Message = string.Empty;
+            AppSettings.Message = string.Empty;
         }
     }
     [RelayCommand]
-    private void LoadChat(string chatName)
+    private void LoadChatContent(int id)
     {
-        UserInfo.ChatLoaded = true;
-        UserInfo.MessageHistory.Clear();
-        UserInfo.Users.Clear();
+        AppSettings.MessageHistory.Clear();
+        AppSettings.Users.Clear();
+        AppSettings.ChatLoaded = true;
+
         //TODO: proper chat load
     }
     [RelayCommand]

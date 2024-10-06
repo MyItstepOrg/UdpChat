@@ -1,8 +1,4 @@
-[
-  {
-    "UserId": 0,
-    "Username": "",
-    "RemoteIp": "127.0.0.1",
-    "RemotePort": 1025
-  }
-]
+{
+  "RemoteIp": "127.0.0.1",
+  "RemotePort":  1025
+}

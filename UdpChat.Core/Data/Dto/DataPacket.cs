@@ -1,8 +1,8 @@
 ﻿namespace UdpChat.Core.Data.Dto;
 public class DataPacket
 {
-    public int UserId { get; set; }
-    public string? Username {  get; set; } = string.Empty;
-    public string? Command { get; set; } = string.Empty;
-    public string? Content { get; set; } = string.Empty;
+    public required string PacketType { get; set; }
+    public int SenderId { get; set; }
+    public DateTime TimeStamp { get; set; }
+    public object? Payload { get; set; }
 }
